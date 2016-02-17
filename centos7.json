@@ -1,0 +1,9 @@
+{
+  "_comment": "Build with `packer build -var-file=centos72.json centos.json`",
+  "iso_checksum": "b9e2480ca2f1b17f27c03f2cf31c4920d5cc70bf",
+  "iso_checksum_type": "sha1",
+  "iso_url": "http://ftp.heanet.ie/pub/centos/7/os/x86_64/images/boot.iso",
+  "kickstart": "ks7.cfg",
+  "vm_name": "centos7",
+  "boot_command": "net.ifnames=0 biosdevname=0"
+}

@@ -1,0 +1,9 @@
+{
+  "_comment": "Build with `packer build -var-file=centos6.json centos.json`",
+  "iso_checksum": "c3678c6b72cbf2ed9b4e8a1ddb190fd262db8b7f",
+  "iso_checksum_type": "sha1",
+  "iso_url": "http://ftp.heanet.ie/pub/centos/6/os/x86_64/images/boot.iso",
+  "kickstart": "ks6.cfg",
+  "vm_name": "centos6",
+  "boot_command": ""
+}
