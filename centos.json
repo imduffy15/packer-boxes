@@ -69,6 +69,12 @@
           "SATA Controller",
           "--hostiocache",
           "on"
+        ],
+        [
+          "modifyvm",
+          "{{ .Name }}",
+          "--natdnshostresolver1",
+          "on"
         ]
       ],
       "vm_name": "{{ user `vm_name` }}"
