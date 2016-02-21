@@ -1,5 +1,16 @@
 #!/bin/bash -eux
 
+yum -y remove bison
+yum -y remove flex
+yum -y remove gcc
+yum -y remove gcc-c++
+yum -y remove kernel-devel
+yum -y remove kernel-headers
+yum -y remove cloog-ppl
+yum -y remove cpp
+yum -y remove libmpc
+yum -y clean all
+
 echo "==> Ensuring there is no 'requiretty' in sudoers"
 
 sed -i 's/\(Defaults.*requiretty\)/# \1/g' /etc/sudoers
@@ -9,7 +20,6 @@ echo "==> Cleaning up temporary network addresses"
 sed -i '/HOSTNAME/d' /etc/sysconfig/network
 rm -f /etc/udev/rules.d/70-persistent-net.rules
 mkdir /etc/udev/rules.d/70-persistent-net.rules
-rm /lib/udev/rules.d/75-persistent-net-generator.rules
 rm -rf /dev/.udev/
 
 
@@ -21,21 +31,6 @@ for ndev in `ls -1 /etc/sysconfig/network-scripts/ifcfg-*`; do
 done
 
 DISK_USAGE_BEFORE_CLEANUP=$(df -h)
-
-# Other locales will be removed from the VM
-KEEP_LANGUAGE="en"
-KEEP_LOCALE="en_US"
-echo "==> Remove unused man page locales"
-pushd /usr/share/man
-if [ $(ls | wc -w) -gt 16 ]; then
-  mkdir ../tmp_dir
-  mv man* $KEEP_LANGUAGE $SECONDARY_LANGUAGE ../tmp_dir
-  rm -rf *
-  mv ../tmp_dir/* .
-  rm -rf ../tmp_dir
-  sync
-fi
-popd
 
 echo "==> Remove packages needed for building guest tools"
 yum -y remove gcc cpp libmpc mpfr kernel-devel kernel-headers perl

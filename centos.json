@@ -61,6 +61,14 @@
           "{{.Name}}",
           "--cpus",
           "{{ user `cpus` }}"
+        ],
+        [
+          "storagectl",
+          "{{ .Name }}",
+          "--name",
+          "SATA Controller",
+          "--hostiocache",
+          "on"
         ]
       ],
       "vm_name": "{{ user `vm_name` }}"
@@ -117,8 +125,8 @@
         "CM={{user `cm`}}",
         "CM_VERSION={{user `cm_version`}}"
       ],
-      "execute_command": "bash '{{.Path}}'",
       "scripts": [
+        "script/repositories.sh",
         "script/fix-slow-dns.sh",
         "script/sshd.sh",
         "script/cmtool.sh",
@@ -127,7 +135,6 @@
       "type": "shell"
     },
     {
-      "execute_command": "bash '{{.Path}}'",
       "only": [
         "vmware-iso"
       ],
@@ -137,7 +144,6 @@
       "type": "shell"
     },
     {
-      "execute_command": "bash '{{.Path}}'",
       "only": [
         "virtualbox-iso"
       ],
@@ -147,7 +153,6 @@
       "type": "shell"
     },
     {
-      "execute_command": "bash '{{.Path}}'",
       "only": [
         "parallels-iso"
       ],
@@ -157,7 +162,6 @@
       "type": "shell"
     },
     {
-      "execute_command": "bash '{{.Path}}'",
       "scripts": [
         "script/cleanup.sh"
       ],

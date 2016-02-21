@@ -1,23 +1,15 @@
 #!/bin/bash -eux
 
-SSH_USER=${SSH_USERNAME:-root}
-SSH_USER_HOME=${SSH_USER_HOME:-/${SSH_USER}}
+HOME_DIR="${HOME_DIR:-/root}";
+VBOX_VERSION=$(cat $HOME_DIR/.vbox_version)
 
 echo "==> Installing VirtualBox guest additions"
-# Assume that we've installed all the prerequisites:
-# kernel-headers-$(uname -r) kernel-devel-$(uname -r) gcc make perl
-# from the install media via ks.cfg
-
-VBOX_VERSION=$(cat $SSH_USER_HOME/.vbox_version)
-mount -o loop $SSH_USER_HOME/VBoxGuestAdditions_$VBOX_VERSION.iso /mnt
-sh /mnt/VBoxLinuxAdditions.run --nox11
-umount /mnt
-rm -rf $SSH_USER_HOME/VBoxGuestAdditions_$VBOX_VERSION.iso
-rm -f $SSH_USER_HOME/.vbox_version
-
-if [[ $VBOX_VERSION = "4.3.10" ]]; then
-    ln -s /opt/VBoxGuestAdditions-4.3.10/lib/VBoxGuestAdditions /usr/lib/VBoxGuestAdditions
-fi
-
-echo "==> Removing packages needed for building guest tools"
-yum -y remove gcc cpp libmpc mpfr kernel-devel kernel-headers perl
+yum -y install autoconf bison flex gcc gcc-c++ kernel-devel kernel-headers m4 patch perl
+mkdir -p /tmp/vbox;
+mount -o loop $HOME_DIR/VBoxGuestAdditions_$VBOX_VERSION.iso /tmp/vbox;
+sh /tmp/vbox/VBoxLinuxAdditions.run \
+    || echo "VBoxLinuxAdditions.run exited $? and is suppressed." \
+        "For more read https://www.virtualbox.org/ticket/12479";
+umount /tmp/vbox;
+rm -rf /tmp/vbox;
+rm -f $HOME_DIR/*.iso;
