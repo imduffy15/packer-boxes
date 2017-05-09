@@ -66,11 +66,11 @@ rm -rf /var/spool/mail/*
 rm -rf /var/mail/*
 
 echo "==> Remove the local machine ID"
-if [ -d /etc/machine-id ]; then
+if [ -f /etc/machine-id ]; then
     rm -f /etc/machine-id
     touch /etc/machine-id
 fi
-if [ -d /var/lib/dbus/machine-id ]; then
+if [ -f /var/lib/dbus/machine-id ]; then
     rm -f /var/lib/dbus/machine-id
     touch /var/lib/dbus/machine-id
 fi
